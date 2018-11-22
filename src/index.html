@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Grunt插件之LiveReload 实现页面自动刷新，所见即所得编辑</title>
+<link href="css/css.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+	<input type="button" onclick="fig.txt_Val = '欢迎来到英雄联盟！';fig.Left= '100px';new msg(fig);" class="btn1" value="按钮1">
+	<input type="button" onclick="fig.txt_Val = '欢迎来到中国！';fig.Left= '500px';new msg(fig);" class="btn2" value="按钮2">
+	<input type="button" onclick="fig.txt_Val = '你好！';fig.Left= '1000px';new msg(fig);" class="btn3" value="按钮3">
+</body>
+</html>
+<script src="js/demo.js" charset="utf-8"></script>
+<script>
+	var fig = {
+		color:"red",//文字颜色
+		fs:"18px",//文字大小
+		b_Color:"1px solid red",//边框样式
+		Width:"400px",//弹框宽度
+		Height:"100px",//弹框高度
+		txt_Val:"欢迎来到英雄联盟！",//文字内容
+		bg:"rgba(200,200,200,.8)",//弹框背景色
+		Left:"100px",//弹框左位置
+		Top:"200px",//弹框上位置
+		Stop_time:2000
+	}
+</script>

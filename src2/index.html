@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Grunt插件之LiveReload 实现页面自动刷新，所见即所得编辑</title>
+<link href="css/css.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+
+<h1>欢迎大家学习JavaScript</h1>
+<p></p>
+<p id="test"></p>
+<button id="btn">提交</button>
+<button id="btn2">提交2</button>
+<button id="btn3">提交3</button>
+
+</body>
+</html>
+<script src="js/demo.js" charset="utf-8"></script>
+<script>
+	// 初始化
+	var message = new Message(fig);
+	// 使用
+	btn.onclick = function(){
+		message.show("哈哈哈哈哈哈！");
+	}
+	var fig = {
+		color:"red",//文字颜色
+		fontSize:"18px",//文字大小
+		b_Color:"1px solid red",//边框样式
+		Width:"400px",//弹框宽度
+		Height:"100px",//弹框高度
+		bg:"rgba(200,200,200,.8)",//弹框背景色
+		Left:"200px",//弹框左位置
+		// Top:"100px",//弹框上位置
+		Stop_time:2000
+	}
+</script>
