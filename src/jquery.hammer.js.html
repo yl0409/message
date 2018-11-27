@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>hammer.js使用测试</title>
+<link href="css/css.css" type="text/css" rel="stylesheet" />
+<style>
+	html,body{
+			margin:0;
+			padding:0;
+			width:1000px;
+			height:700px;
+			background-color: #ddd;
+			position: relative;
+		}
+		#puzzle{
+			position: absolute;
+			top: 40%;
+			left: 30%;
+			width:340px;
+			height: 260px;
+		}
+		#puzzle .container{
+			float:left;
+			width:107px;
+			height:80px;
+		}
+		#puzzle .container i{
+			display: block;
+			margin:4px;
+			width: 99px;
+			height: 72px;
+			background-color: #fff;
+		}
+		#video{
+			/*display: none;*/
+			opacity: 1;
+		}
+		canvas{
+			position: absolute;
+			z-index: 4;
+		}
+		#btn{
+			position: absolute;
+			top: 550px;
+			left: 400px;
+		}
+		.active{
+			z-index: 999;
+			box-shadow:3px 3px 4px 2px rgba(167,167,229,.7);
+		}
+</style>
+</head>
+<body>
+	<!-- <canvas id="cas" width="320" height="240"></canvas> -->
+	<div id="puzzle">
+		<div class="container"><i></i></div>
+		<div class="container"><i></i></div>
+		<div class="container"><i></i></div>
+		<div class="container"><i></i></div>
+		<div class="container"><i></i></div>
+		<div class="container"><i></i></div>
+		<div class="container"><i></i></div>
+		<div class="container"><i></i></div>
+		<div class="container"><i></i></div>
+	</div>
+	<video muted="muted" width="320" height="240" id="video" preload="preload" autoplay="autoplay" loop>
+		<source src="video/movie.mp4" type="video/mp4">
+	</video>
+	<button id="btn">开始游戏</button>
+</body>
+</html>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/hammer.js/2.0.8/hammer.min.js"></script>
+<script src="js/jquery.hammer.js"></script>
+<script>
+	btn.onclick = function(){
+		video.style.opacity = "0";
+		setInterval(function(){
+		for(var i = 0; i<9;i++){
+			//每个九宫格的索引值和坐标位置的转换关系
+			var row = Math.floor(dataIndex[i] / 3) //取余数获取行数
+			var col = Math.floor(dataIndex[i] % 3)//取模获得列数
+			ctx[i].drawImage(video,(col*107),(row*80),107,80,0,0,107,80);
+		}
+	},50);
+	}
+	var video = document.getElementById('video');
+	var con = document.getElementsByClassName('container');
+	var ctx = [];
+	var dataIndex = [];
+	var arr = [];
+	var num = 0;
+	for (var i = 0; i < 9; i++) {
+		var cas=document.createElement("canvas");
+		var context = cas.getContext("2d");
+		window.document.body.appendChild(cas);
+		cas.setAttribute("width","107");
+		cas.setAttribute("height","80");
+		ctx[i] = context;
+		dataIndex[i] = i;
+		cas.className = "tu";
+		$(".tu").eq(i).attr("data-index",i);
+		$(".container").eq(i).attr("data-index",i);
+		$("canvas").eq(i).attr("data-switch","on");
+		cas.style.left = (Math.random()*window.screen.availWidth / 1.5 ) + "px";
+		cas.style.top = (Math.random()*window.screen.availHeight / 1.5 ) + "px";
+		cas.style.transform = "rotate("+(Math.random()*20)+"deg)";
+	}
+		var hammer = $(".tu").hammer();
+		hammer.on("panstart",function(ev){
+			console.log("拖动开始");
+			// console.log(ev);
+			// console.log($(this).offset());
+			$(this).data("top",$(this).offset().top);
+			$(this).data("left",$(this).offset().left);
+			//利用data()读取或设置对象属性的特点，直接将对象保存到data-position 中
+			$(this).data("position",$(this).offset());
+			this.className = "active";
+		});
+		hammer.on("panmove",function(ev){
+			// console.log("x坐标:"+ev.gesture.deltaX);
+			// console.log("y坐标:"+ev.gesture.deltaY);
+			//移动距离: ev.gesture.deltaX 和 ev.gesture.deltaY
+			var top = $(this).data("position").top;
+			var left = $(this).data("position").left;
+			$(this).css({
+				"top":top + ev.gesture.deltaY,
+				"left":left + ev.gesture.deltaX
+			});
+		});
+		hammer.on("panend",function(ev){
+			$(this).removeClass("active");
+			var centerX = $(this).data("position").left + ev.gesture.deltaX + $(this).width()/2;
+			var centerY = $(this).data("position").top + ev.gesture.deltaY + $(this).height()/2;
+			for (var j = 0;j < 9; j++){
+
+				var Top = $(".container").eq(j).offset().top;
+				var Top2 = $(".container").eq(j).offset().top+$(".container").eq(j).height();
+				var Left=$(".container").eq(j).offset().left;
+				var Left2=$(".container").eq(j).offset().left+$(".container").eq(j).width();
+
+				// console.log($(this).data("index"));
+				// console.log($(".container").eq(j).data("index"))
+
+				if(centerX > Left && centerX < Left2 &&  centerY > Top && centerY < Top2){
+					if($(this).data("index") === $(".container").eq(j).data("index")){
+					$(this).removeAttr("style");
+					$(this).css({
+						"left":Left+"px",
+						"top":Top+"px"
+					});
+					if($(this).attr("data-switch") == "on"){
+							num += 1;
+						$(this).attr("data-switch","off");
+					}
+					}else{
+						if($(this).attr("data-switch") == "off"){
+							num -= 1;
+							$(this).attr("data-switch","on");
+						}
+					}
+					console.log(num);
+					// arr.push($(this));
+					if(num == 9){
+						alert("恭喜你，拼图成功！");
+					}
+			}
+
+		}
+		});
+
+</script>
